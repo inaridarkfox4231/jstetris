@@ -4,11 +4,11 @@ $(function(){
   $.ajax({url: "./src/functions.js", dataType: "script", async: false});
   $.ajax({url: "./src/keyevent.js", dataType: "script", async: false});
 
+  init();
   function gameLoop(){
-    if(pos_y >= 400){ return; }
     update();
     draw();
   };
 
-  setInterval(gameLoop, 500);
+  setInterval(gameLoop, 20);
 });
