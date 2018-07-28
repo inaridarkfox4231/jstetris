@@ -13,19 +13,26 @@ $(function(){
   }
 
   function fall(){
+    re_draw();
+    if(pos_y >= 400){ return; }
     erasetile(pos_x, pos_y);
     pos_y += 20;
-    if(pos_y >= canvas.height){ return; }  // canvas.heightで高さ。
     drawtile(pos_x, pos_y, tilecolor);
   };
 
+  function re_draw(){
+    ctx.drawImage(board, 110, 10);
+    $('#level').text(level);
+    $('#score').text(score);
+  }
+
   function sideMove(direction){
-    if(direction > 0 && pos_x < 360){
+    if(direction > 0 && pos_x < 300){
       erasetile(pos_x, pos_y);
       pos_x += 20;
       drawtile(pos_x, pos_y, tilecolor);
     }
-    if(direction < 0 && pos_x > 0){
+    if(direction < 0 && pos_x > 120){
       erasetile(pos_x, pos_y);
       pos_x -= 20;
       drawtile(pos_x, pos_y, tilecolor);
@@ -39,5 +46,5 @@ $(function(){
       else if(e.keyCode == 13) tilecolor = (tilecolor % 7 + 1);
   }
 
-  setInterval(fall, 500);
+  setInterval(fall, 300);
 });
