@@ -16,7 +16,7 @@ var blank = new Image();
 blank.src = "./images/BLANK.png";  // ブランク（横一列・・行消去に使う）
 
 var board = new Image();
-board.src = "./images/BOARD.png";  // ボード
+board.src = "./images/board.png";  // ボード
 
 var score = 0; // スコア（初期値は0）
 var level = 0; // レベル（初期値は0）
