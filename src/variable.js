@@ -19,3 +19,8 @@ board.src = "./images/board.png";  // ボード
 
 var score = 0; // スコア（初期値は0）
 var level = 0; // レベル（初期値は0）
+
+var Matrix = []; // 積み上げ状況(12×24で作る)
+for(var i = 0; i < 24; i++){
+  Matrix.push([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
+}

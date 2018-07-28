@@ -1,6 +1,6 @@
 $(function(){
   "use strict";
-  $.ajax({url: "./variable.js", dataType: "script", async: false});
+  $.ajax({url: "./src/variable.js", dataType: "script", async: false});
 
   function drawtile(x, y, color){
     // (x, y)の位置にcolor色のタイルを置く
@@ -13,14 +13,14 @@ $(function(){
   }
 
   function fall(){
-    re_draw();
+    update();
     if(pos_y >= 400){ return; }
     erasetile(pos_x, pos_y);
     pos_y += 20;
     drawtile(pos_x, pos_y, tilecolor);
   };
 
-  function re_draw(){
+  function update(){
     ctx.drawImage(board, 110, 10);
     $('#level').text(level);
     $('#score').text(score);
