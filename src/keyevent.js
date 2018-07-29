@@ -40,7 +40,10 @@ function clickHandler(e){
     }
     if(260 < x && x < 300 && 200 < y && y < 240){ slide(-1); }
     if(300 < x && x < 340 && 200 < y && y < 240){ slide(1); }
-    if(270 < x && x < 330 && 260 < y && y < 300){ frame = fall_speed; }
+    if(270 < x && x < 330 && 260 < y && y < 300){
+       frame = fall_speed;
+       score += 5;  // 強制落下で+5点
+    }
   }
   if(270 < x && x < 330 && 320 < y && y < 360 && state == GAMEOVER){
     state = PLAY; reset();
