@@ -27,7 +27,7 @@ function update(){
     }
   }
   // FREEZEの時は必要なら行消ししてそれからブロック生成などしてPLAYに戻る
-  if(state == FREEZE){
+  if(state == FREEZE && frame == 0){
     var length = eraseLine.length;
     if(length > 0){
       var p = eraseLine[0];
@@ -51,25 +51,29 @@ function draw(){
       }
     }
   }
-  // PLAYの場合はテトリミノを描画する
-  if(state == PLAY){
+  // PLAY又はPAUSEの場合はテトリミノを描画する
+  if(state == PLAY || state == PAUSE){
     for(k = 0; k < 4; k++){
       if(ty[k] > 3){
         drawtile(20 * (tx[k] - 1) + 70, 20 * ty[k] - 60, type);
       }
     }
   }
+  // PAUSEの場合はポーズフレーズを表示する
+  if(state == PAUSE){
+    ctx.drawImage(pauseText, 70, 200);
+  }
   // FREEZEの場合は行が消えるアニメーションを展開する
   if(state == FREEZE){
     if(frame > 0){
       frame++;
-      if((frame / 8) % 2 == 0){
+      if((frame / 2) % 2 == 0){
         for(k = 0; k < eraseLine.length; k++){
           ctx.drawImage(blank, 70, eraseLine[k] * 20 - 60);
         }
       }
     }
-    if(frame > 64){ frame = 0; }
+    if(frame > 32){ frame = 0; }
   }
 }
 

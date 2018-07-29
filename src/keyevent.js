@@ -4,14 +4,18 @@ document.addEventListener("keydown", keyDownHandler, false);
 
 // 十字キーの右で右移動、左で左移動、上で回転、下で強制落下。
 function keyDownHandler(e){
-    if(e.keyCode == 39){　slide(1);　}
-    else if(e.keyCode == 37){ slide(-1); }
-    else if(e.keyCode == 38){
+    if(e.keyCode == 39){　slide(1);　} // 右キー（右移動）
+    else if(e.keyCode == 37){ slide(-1); } // 左キー（左移動）
+    else if(e.keyCode == 38){ // 上キー（回転）
       if(rollable()){
         phase = (phase + 1) % 4;
         setBlock();
       }
-    }else if(e.keyCode == 40){ frame = fall_speed; }
+    }else if(e.keyCode == 40){ frame = fall_speed; } // 下キー（落下）
+    else if(e.keyCode == 32){ // スペースキー（ポーズ、ポーズ解除）
+      if(state == PAUSE){ state = PLAY; }
+      else if(state == PLAY){ state = PAUSE; }
+    }
 }
 
 // diffが1なら右移動、-1なら左移動

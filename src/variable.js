@@ -18,6 +18,9 @@ blank.src = "./images/BLANK.png";  // ブランク（横一列・・行消去に
 var board = new Image();
 board.src = "./images/board.png";  // ボード
 
+var pauseText = new Image();
+pauseText.src = "./images/pause.png"; // ポーズテキスト
+
 var score = 0; // スコア（初期値は0）
 var level = 0; // レベル（初期値は0）
 
