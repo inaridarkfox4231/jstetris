@@ -4,17 +4,22 @@ document.addEventListener("keydown", keyDownHandler, false);
 
 // 十字キーの右で右移動、左で左移動、上で回転、下で強制落下。
 function keyDownHandler(e){
-    if(e.keyCode == 39){　slide(1);　} // 右キー（右移動）
-    else if(e.keyCode == 37){ slide(-1); } // 左キー（左移動）
-    else if(e.keyCode == 38){ // 上キー（回転）
+    if(e.keyCode == 39 && state == PLAY){　slide(1);　} // 右キー（右移動）
+    else if(e.keyCode == 37 && state == PLAY){ slide(-1); } // 左キー（左移動）
+    else if(e.keyCode == 38 && state == PLAY){ // 上キー（回転）
       if(rollable()){
         phase = (phase + 1) % 4;
         setBlock();
       }
-    }else if(e.keyCode == 40){ frame = fall_speed; } // 下キー（落下）
+    }else if(e.keyCode == 40 && state == PLAY){ frame = fall_speed; } // 下キー（落下）
     else if(e.keyCode == 32){ // スペースキー（ポーズ、ポーズ解除）
       if(state == PAUSE){ state = PLAY; }
       else if(state == PLAY){ state = PAUSE; }
+    }else if(e.keyCode == 13){ // エンターキーはゲームオーバーからのリセットに使う
+      if(state == GAMEOVER){
+        state = PLAY;
+        reset();  // リセット処理
+      }
     }
 }
 
@@ -60,6 +65,17 @@ function rollable(){
     }
     if(type == 6){
       return Matrix[b - dx[q]][a + dy[q]] == 0;
+    }
+  }
+}
+
+// リセット処理
+function reset(){
+  level = 1;
+  score = 0;
+  for(j = 0; j < 24; j++){
+    for(i = 1; i < 11; i++){
+      Matrix[j][i] = 0;
     }
   }
 }

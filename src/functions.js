@@ -28,13 +28,20 @@ function update(){
   }
   // FREEZEの時は必要なら行消ししてそれからブロック生成などしてPLAYに戻る
   if(state == FREEZE && frame == 0){
+    // 上まで積みあがったらGAMEOVERにして抜ける
+    if(Matrix[4][5] > 0 || Matrix[4][6] > 0){
+      state = GAMEOVER;
+      frame++; return;
+    }
     var length = eraseLine.length;
+    // 消す行があるときはその処理
     if(length > 0){
       var p = eraseLine[0];
       for(j = 0; j < length; j++){ Matrix.splice(p, 1); }
       for(j = 0; j < length; j++){ Matrix.unshift([8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8]); }
       eraseLine = [];
     }
+    // ブロックを再生成してPLAYに戻る
     makeBlock();
     state = PLAY;
   }
@@ -74,6 +81,21 @@ function draw(){
       }
     }
     if(frame > 32){ frame = 0; }
+  }
+  // GAMEOVERのときはブロックを灰にしていって終わったらテキスト表示
+  if(state == GAMEOVER){
+    if(frame > 0){
+      frame++;
+      if(frame % 2 == 0){
+        for(i = 1; i < 11; i++){
+          if(Matrix[(frame / 2) + 3][i] > 0){ Matrix[(frame / 2) + 3][i] = 8; }
+        }
+      }
+    }
+    if(frame > 40){ frame = 0; }
+    if(frame == 0){
+      ctx.drawImage(gameoverText, 70, 200);
+    }
   }
 }
 
