@@ -24,10 +24,6 @@ function drawNext(){
     tmp = nextTilePos[nextType][k]
     drawtile(280 + 20 * (tmp % 2), 20 + 20 * (tmp >> 1), nextType);
   }
-  //drawtile(280, 20, 2); drawtile(300, 20, 1);
-  //drawtile(280, 40, 3); drawtile(300, 40, 4);
-  //drawtile(280, 60, 5); drawtile(300, 60, 6);
-  //drawtile(280, 80, 1); drawtile(300, 80, 2);
 }
 
 // 初期化
@@ -72,8 +68,8 @@ function update(){
 
 // 描画関数
 function draw(){
-  ctx.drawImage(board, 30, 10); // ボードで初期化
-  ctx.drawImage(nextBox, 270, 10); // ネクストボックス
+  ctx.drawImage(gameBoard, 0, 0); // ゲームボードで初期化
+
   drawBase();  // 配置済みのタイルを描画
   drawNext();  // 次に落ちてくるテトリミノを描画
   // PLAY又はPAUSEの場合はテトリミノを描画する

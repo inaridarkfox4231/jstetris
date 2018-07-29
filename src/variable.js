@@ -15,15 +15,14 @@ tiles.src = "./images/TILES.png";  // タイル要素
 var blank = new Image();
 blank.src = "./images/BLANK.png";  // ブランク（横一列・・行消去に使う）
 
-var board = new Image();
-board.src = "./images/board.png";  // ボード
+var gameBoard = new Image();
+gameBoard.src = "./images/GAMEBOARD.png"; // ゲームボード
 
 var pauseText = new Image();
 pauseText.src = "./images/pause.png"; // ポーズテキスト
 var gameoverText = new Image();
 gameoverText.src = "./images/gameover.png";  // ゲームオーバーテキスト
-var nextBox = new Image();
-nextBox.src = "./images/next.png";  // ネクストボックス
+
 var nextTilePos = [[], [0, 2, 4, 6], [1, 2, 3, 4], [0, 2, 3, 5], [0, 1, 2, 4],
                        [0, 1, 3, 5], [0, 2, 3, 4], [2, 3, 4, 5]];
 
