@@ -7,6 +7,29 @@ function drawtile(x, y, color){
   ctx.drawImage(tiles, 20 * color, 0, 20, 20, x, y, 20, 20);
 };
 
+// 配置済みのタイルを描画する
+function drawBase(){
+  for(j = 4; j < 24; j++){
+    for(i = 1; i < 11; i++){
+      if(Matrix[j][i] > 0){
+        drawtile(20 * (i - 1) + 40, 20 * j - 60, Matrix[j][i]);
+      }
+    }
+  }
+}
+
+// 次に落ちてくるテトリミノをネクストボックスに描画する
+function drawNext(){
+  for(k = 0; k < 4; k++){
+    tmp = nextTilePos[nextType][k]
+    drawtile(280 + 20 * (tmp % 2), 20 + 20 * (tmp >> 1), nextType);
+  }
+  //drawtile(280, 20, 2); drawtile(300, 20, 1);
+  //drawtile(280, 40, 3); drawtile(300, 40, 4);
+  //drawtile(280, 60, 5); drawtile(300, 60, 6);
+  //drawtile(280, 80, 1); drawtile(300, 80, 2);
+}
+
 // 初期化
 function init(){
   // 両端を8にして判定に使う（jを回してi++やってしまった。。）
@@ -49,34 +72,29 @@ function update(){
 
 // 描画関数
 function draw(){
-  ctx.drawImage(board, 60, 10); // ボードで初期化
-  // 配置済みのタイルを描画する
-  for(j = 4; j < 24; j++){
-    for(i = 1; i < 11; i++){
-      if(Matrix[j][i] > 0){
-        drawtile(20 * (i - 1) + 70, 20 * j - 60, Matrix[j][i]);
-      }
-    }
-  }
+  ctx.drawImage(board, 30, 10); // ボードで初期化
+  ctx.drawImage(nextBox, 270, 10); // ネクストボックス
+  drawBase();  // 配置済みのタイルを描画
+  drawNext();  // 次に落ちてくるテトリミノを描画
   // PLAY又はPAUSEの場合はテトリミノを描画する
   if(state == PLAY || state == PAUSE){
     for(k = 0; k < 4; k++){
       if(ty[k] > 3){
-        drawtile(20 * (tx[k] - 1) + 70, 20 * ty[k] - 60, type);
+        drawtile(20 * (tx[k] - 1) + 40, 20 * ty[k] - 60, type);
       }
     }
   }
   // PAUSEの場合はポーズフレーズを表示する
   if(state == PAUSE){
-    ctx.drawImage(pauseText, 70, 200);
+    ctx.drawImage(pauseText, 40, 200);
   }
   // FREEZEの場合は行が消えるアニメーションを展開する
   if(state == FREEZE){
     if(frame > 0){
       frame++;
-      if((frame / 2) % 2 == 0){
+      if((frame >> 1) % 2 == 0){
         for(k = 0; k < eraseLine.length; k++){
-          ctx.drawImage(blank, 70, eraseLine[k] * 20 - 60);
+          ctx.drawImage(blank, 40, eraseLine[k] * 20 - 60);
         }
       }
     }
@@ -88,20 +106,21 @@ function draw(){
       frame++;
       if(frame % 2 == 0){
         for(i = 1; i < 11; i++){
-          if(Matrix[(frame / 2) + 3][i] > 0){ Matrix[(frame / 2) + 3][i] = 8; }
+          if(Matrix[(frame >> 1) + 3][i] > 0){ Matrix[(frame >> 1) + 3][i] = 8; }
         }
       }
     }
     if(frame > 40){ frame = 0; }
     if(frame == 0){
-      ctx.drawImage(gameoverText, 70, 200);
+      ctx.drawImage(gameoverText, 40, 200);
     }
   }
 }
 
 // テトリミノを作る
 function makeBlock(){
-  type = Math.floor(Math.random() * 7) + 1;  // 1～7の乱数を生成
+  type = nextType;
+  nextType = Math.floor(Math.random() * 7) + 1;  // 1～7の乱数を生成
   // 0番の位置の微調整
   if(type == 5){ tx[0] = 6;
   }else{ tx[0] = 5; }

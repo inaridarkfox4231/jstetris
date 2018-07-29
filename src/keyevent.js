@@ -73,6 +73,7 @@ function rollable(){
 function reset(){
   level = 1;
   score = 0;
+  nextType = Math.floor(Math.random() * 7) + 1; // nextも初期化する
   for(j = 0; j < 24; j++){
     for(i = 1; i < 11; i++){
       Matrix[j][i] = 0;

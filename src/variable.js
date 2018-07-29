@@ -1,7 +1,7 @@
 // 変数関連
 
 // 回す変数
-var i, j, k;
+var i, j, k, tmp;
 
 var canvas = $('canvas')[0];       // $('canvas')[0] でやるとDOM要素：getContext等が使える
 var myCanvas = $('#myCanvas');     // $('#myCanvas')でやるとタグ要素：cssをいじったりできる
@@ -22,6 +22,10 @@ var pauseText = new Image();
 pauseText.src = "./images/pause.png"; // ポーズテキスト
 var gameoverText = new Image();
 gameoverText.src = "./images/gameover.png";  // ゲームオーバーテキスト
+var nextBox = new Image();
+nextBox.src = "./images/next.png";  // ネクストボックス
+var nextTilePos = [[], [0, 2, 4, 6], [1, 2, 3, 4], [0, 2, 3, 5], [0, 1, 2, 4],
+                       [0, 1, 3, 5], [0, 2, 3, 4], [2, 3, 4, 5]];
 
 var score = 0; // スコア（初期値は0）
 var level = 0; // レベル（初期値は0）
@@ -35,6 +39,7 @@ var tx = [0, 0, 0, 0];  // 落下するテトリミノのx座標(1～10)
 var ty = [0, 0, 0, 0];  // 落下するテトリミノのy座標(0～23)（表示は4～23）
 var phase = 0;  // フェイズ（回転用）
 var type = 0;   // タイプ（テトリミノの形状：1～7）
+var nextType = Math.floor(Math.random() * 7) + 1; // 次のテトリミノのタイプ（1～7）
 const dx = [0, -1, 0, 1];   // x方向のベクトル(xは横方向)
 const dy = [1, 0, -1, 0];   // y方向のベクトル(yは縦方向)
 
@@ -49,4 +54,5 @@ const PLAY = 1;
 const PAUSE = 2;
 const FREEZE = 3;
 const GAMEOVER = 4;
+const CLEAR = 5;
 var state = PLAY;
