@@ -1,30 +1,4 @@
-// 関数関連
-
-// タイルを部分的に取り出す関数
-function drawtile(x, y, color){
-  // (x, y)の位置にcolor色のタイルを置く
-  // 1~7で色を指定（青、赤、橙、黄緑、紫、緑、茶色）
-  ctx.drawImage(tiles, 20 * color, 0, 20, 20, x, y, 20, 20);
-};
-
-// 配置済みのタイルを描画する
-function drawBase(){
-  for(j = 4; j < 24; j++){
-    for(i = 1; i < 11; i++){
-      if(Matrix[j][i] > 0){
-        drawtile(20 * (i - 1) + 40, 20 * j - 60, Matrix[j][i]);
-      }
-    }
-  }
-}
-
-// 次に落ちてくるテトリミノをネクストボックスに描画する
-function drawNext(){
-  for(k = 0; k < 4; k++){
-    tmp = nextTilePos[nextType][k]
-    drawtile(280 + 20 * (tmp % 2), 20 + 20 * (tmp >> 1), nextType);
-  }
-}
+// 関数（update関係）
 
 // 初期化
 function init(){
@@ -52,64 +26,25 @@ function update(){
       state = GAMEOVER;
       frame++; return;
     }
-    var length = eraseLine.length;
+    var length = eraseLine.length; // lengthを使ってスコアを計算
     // 消す行があるときはその処理
     if(length > 0){
       var p = eraseLine[0];
       for(j = 0; j < length; j++){ Matrix.splice(p, 1); }
       for(j = 0; j < length; j++){ Matrix.unshift([8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8]); }
       eraseLine = [];
+      score += linescore[length];  // 1, 2, 3, 4に応じて得点を加算する
+      if(Math.floor(lines / 10) < Math.floor((lines + length) / 10)){
+        level += 1;
+        fall_speed -= 1;
+        if(level > 15){ level = 15; }
+        if(fall_speed < 2){ fall_speed = 2; }
+      }
+      lines += length;
     }
     // ブロックを再生成してPLAYに戻る
     makeBlock();
     state = PLAY;
-  }
-}
-
-// 描画関数
-function draw(){
-  ctx.drawImage(gameBoard, 0, 0); // ゲームボードで初期化
-
-  drawBase();  // 配置済みのタイルを描画
-  drawNext();  // 次に落ちてくるテトリミノを描画
-  // PLAY又はPAUSEの場合はテトリミノを描画する
-  if(state == PLAY || state == PAUSE){
-    for(k = 0; k < 4; k++){
-      if(ty[k] > 3){
-        drawtile(20 * (tx[k] - 1) + 40, 20 * ty[k] - 60, type);
-      }
-    }
-  }
-  // PAUSEの場合はポーズフレーズを表示する
-  if(state == PAUSE){
-    ctx.drawImage(pauseText, 40, 200);
-  }
-  // FREEZEの場合は行が消えるアニメーションを展開する
-  if(state == FREEZE){
-    if(frame > 0){
-      frame++;
-      if((frame >> 1) % 2 == 0){
-        for(k = 0; k < eraseLine.length; k++){
-          ctx.drawImage(blank, 40, eraseLine[k] * 20 - 60);
-        }
-      }
-    }
-    if(frame > 32){ frame = 0; }
-  }
-  // GAMEOVERのときはブロックを灰にしていって終わったらテキスト表示
-  if(state == GAMEOVER){
-    if(frame > 0){
-      frame++;
-      if(frame % 2 == 0){
-        for(i = 1; i < 11; i++){
-          if(Matrix[(frame >> 1) + 3][i] > 0){ Matrix[(frame >> 1) + 3][i] = 8; }
-        }
-      }
-    }
-    if(frame > 40){ frame = 0; }
-    if(frame == 0){
-      ctx.drawImage(gameoverText, 40, 200);
-    }
   }
 }
 

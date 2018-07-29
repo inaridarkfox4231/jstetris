@@ -23,11 +23,18 @@ pauseText.src = "./images/pause.png"; // ポーズテキスト
 var gameoverText = new Image();
 gameoverText.src = "./images/gameover.png";  // ゲームオーバーテキスト
 
+var numbers = new Image();
+numbers.src = "./images/NUMBER.png";  // 数のテキスト
+
+// 次のテトリミノを表示する為のデータ
 var nextTilePos = [[], [0, 2, 4, 6], [1, 2, 3, 4], [0, 2, 3, 5], [0, 1, 2, 4],
                        [0, 1, 3, 5], [0, 2, 3, 4], [2, 3, 4, 5]];
+// スコア計算用
+var linescore = [0, 1000, 3000, 5000, 10000];
 
-var score = 0; // スコア（初期値は0）
-var level = 0; // レベル（初期値は0）
+var level = 1; // レベル（初期値は1, MAXで15の予定。ステージクリアは1, 5, 9, 13に。）
+var score = 0; // スコア（初期値は0, 999999でカンストの予定。）
+var lines = 0; // 消した行の数。あるいは、ステージクリアだとノルマに使ったり。
 
 var Matrix = []; // 積み上げ状況(12×24で作る)
 for(j = 0; j < 25; j++){
@@ -42,7 +49,7 @@ var nextType = Math.floor(Math.random() * 7) + 1; // 次のテトリミノのタ
 const dx = [0, -1, 0, 1];   // x方向のベクトル(xは横方向)
 const dy = [1, 0, -1, 0];   // y方向のベクトル(yは縦方向)
 
-var fall_speed = 16; // 落下スピード（フレーム数がこれを超えると1落ちる）
+var fall_speed = 16 // 落下スピード（フレーム数がこれを超えると1落ちる）
 var frame = 0;  // フレーム数
 
 var eraseLine = [] // 消去する行の番号を格納する

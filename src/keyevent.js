@@ -12,7 +12,10 @@ function keyDownHandler(e){
         phase = (phase + 1) % 4;
         setBlock();
       }
-    }else if(e.keyCode == 40 && state == PLAY){ frame = fall_speed; } // 下キー（落下）
+    }else if(e.keyCode == 40 && state == PLAY){ // 下キー（落下）
+       frame = fall_speed;
+       score += 5;   // 強制落下で+5点
+     }
     else if(e.keyCode == 32){ // スペースキー（ポーズ、ポーズ解除）
       if(state == PAUSE){ state = PLAY; }
       else if(state == PLAY){ state = PAUSE; }
@@ -100,6 +103,8 @@ function rollable(){
 function reset(){
   level = 1;
   score = 0;
+  lines = 0;
+  fall_speed = 16;
   nextType = Math.floor(Math.random() * 7) + 1; // nextも初期化する
   for(j = 0; j < 24; j++){
     for(i = 1; i < 11; i++){
