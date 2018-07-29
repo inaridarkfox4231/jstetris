@@ -1,6 +1,7 @@
-// キーイベント関連
+// キーイベント関連, クリックイベント関連
 
 document.addEventListener("keydown", keyDownHandler, false);
+canvas.addEventListener("click", clickHandler, false);
 
 // 十字キーの右で右移動、左で左移動、上で回転、下で強制落下。
 function keyDownHandler(e){
@@ -21,6 +22,32 @@ function keyDownHandler(e){
         reset();  // リセット処理
       }
     }
+}
+
+// クリックでパッドを操作した時の挙動について
+function clickHandler(e){
+  var x, y;
+  var rect = e.target.getBoundingClientRect();
+  x = e.clientX - rect.left;
+  y = e.clientY - rect.top;
+  if(x < 260 || y < 120){ return; }
+  if(state == PLAY){
+    if(270 < x && x < 330 && 140 < y && y < 180){
+      if(rollable()){ phase = (phase + 1) % 4; setBlock(); }
+    }
+    if(260 < x && x < 300 && 200 < y && y < 240){ slide(-1); }
+    if(300 < x && x < 340 && 200 < y && y < 240){ slide(1); }
+    if(270 < x && x < 330 && 260 < y && y < 300){ frame = fall_speed; }
+  }
+  if(270 < x && x < 330 && 320 < y && y < 360 && state == GAMEOVER){
+    state = PLAY; reset();
+  }
+  if(270 < x && x < 330 && 380 < y && y < 420){
+    if(state == PLAY){ state = PAUSE; }
+    else if(state == PAUSE){ state = PLAY; }
+  }
+
+
 }
 
 // diffが1なら右移動、-1なら左移動
