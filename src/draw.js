@@ -19,6 +19,10 @@ function drawLVnum(s, n){
 function drawSCOREnum(s, n){
   drawnumber(203 - 18 * s, 470, n);
 }
+// ライン数表示用(0, 1, 2)
+function drawLINESnum(s, n){
+  drawnumber(302 - 18 * s, 440, n);
+}
 
 // 配置済みのタイルを描画する
 function drawBase(){
@@ -57,6 +61,15 @@ function drawScore(){
   }
 }
 
+// ライン数を表示する
+function drawLines(){
+  tmp = lines;
+  for(i = 0; i < 3; i++){
+    drawLINESnum(i, tmp % 10);
+    tmp = Math.floor(tmp / 10);
+  }
+}
+
 // 描画関数
 function draw(){
   ctx.drawImage(gameBoard, 0, 0); // ゲームボードで初期化
@@ -64,6 +77,7 @@ function draw(){
   drawNext();  // 次に落ちてくるテトリミノを描画
   drawLevel(); // レベル表示
   drawScore(); // スコア表示
+  drawLines(); // ライン数表示
 
   // PLAY又はPAUSEの場合はテトリミノを描画する
   if(state == PLAY || state == PAUSE){
