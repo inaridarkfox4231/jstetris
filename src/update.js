@@ -29,8 +29,7 @@ function update(){
     var length = eraseLine.length; // lengthを使ってスコアを計算
     // 消す行があるときはその処理
     if(length > 0){
-      var p = eraseLine[0];
-      for(j = 0; j < length; j++){ Matrix.splice(p, 1); }
+      for(j = 0; j < length; j++){ Matrix.splice(eraseLine[length - j - 1], 1); }
       for(j = 0; j < length; j++){ Matrix.unshift([8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8]); }
       eraseLine = [];
       score += linescore[length];  // 1, 2, 3, 4に応じて得点を加算する
