@@ -22,6 +22,12 @@ var pauseText = new Image();
 pauseText.src = "./images/pause.png"; // ポーズテキスト
 var gameoverText = new Image();
 gameoverText.src = "./images/gameover.png";  // ゲームオーバーテキスト
+var logoText = new Image();
+logoText.src = "./images/logo.png"; // タイトル
+var titlemesText = new Image();
+titlemesText.src = "./images/titlemessage.png"  // タイトル下の文章
+var choicesText = new Image();
+choicesText.src = "./images/choices.png"  // 選択肢の画像
 
 var numbers = new Image();
 numbers.src = "./images/NUMBER.png";  // 数のテキスト
@@ -55,10 +61,15 @@ var frame = 0;  // フレーム数
 var eraseLine = [] // 消去する行の番号を格納する
 
 // State定数
-const START = 0;
-const PLAY = 1;
-const PAUSE = 2;
-const FREEZE = 3;
-const GAMEOVER = 4;
-const CLEAR = 5;
+const TITLE = 0;
+const SELECT = 1;
+const PLAY = 2;
+const PAUSE = 3;
+const FREEZE = 4;
+const GAMEOVER = 5;
+const CLEAR = 6;
 var state = PLAY;
+
+// モード変数
+var mode = 0;  // 0のときタイトルに戻る、1のときステージクリアモード、2のときスコアアタックモード
+// 上下キーで変わる、もしくはクリックで決定されて実行される。 

@@ -39,7 +39,7 @@ function update(){
         if(level > 15){ level = 15; }
         if(fall_speed < 2){ fall_speed = 2; }
       }
-      lines += length;
+      lines += length;  // スコアアタックでは消したライン数をカウントする。
     }
     // ブロックを再生成してPLAYに戻る
     makeBlock();
