@@ -68,8 +68,8 @@ const PAUSE = 3;
 const FREEZE = 4;
 const GAMEOVER = 5;
 const CLEAR = 6;
-var state = PLAY;
+var state = TITLE;  // タイトルからスタート
 
 // モード変数
 var mode = 0;  // 0のときタイトルに戻る、1のときステージクリアモード、2のときスコアアタックモード
-// 上下キーで変わる、もしくはクリックで決定されて実行される。 
+// 上下キーで変わる、もしくはクリックで決定されて実行される。

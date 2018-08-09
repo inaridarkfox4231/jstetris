@@ -7,6 +7,8 @@ function init(){
   // 最下段を8にして判定に使う
   for(i = 0; i < 12; i++){ Matrix[24][i] = 8; }
   makeBlock();
+  // mode == 1ならlinesを10, 20, 30, 50(levelによる)で初期化。
+  // mode == 2ならlinesを0で初期化。
 }
 
 // アップデート関数
@@ -40,10 +42,11 @@ function update(){
         if(fall_speed < 2){ fall_speed = 2; }
       }
       lines += length;  // スコアアタックでは消したライン数をカウントする。
+      // ステージクリアではlengthだけlinesを減らす(0未満にはならない)。
     }
     // ブロックを再生成してPLAYに戻る
     makeBlock();
-    state = PLAY;
+    state = PLAY;  // modeが1でlinesが0ならCLEARに遷移する。
   }
 }
 

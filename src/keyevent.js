@@ -16,44 +16,64 @@ function keyDownHandler(e){
        frame = fall_speed;
        score += 5;   // 強制落下で+5点
      }
-    else if(e.keyCode == 32){ // スペースキー（ポーズ、ポーズ解除）
-      if(state == PAUSE){ state = PLAY; }
-      else if(state == PLAY){ state = PAUSE; }
-    }else if(e.keyCode == 13){ // エンターキーはゲームオーバーからのリセットに使う
-      if(state == GAMEOVER){
-        state = PLAY;
+    else if(e.keyCode == 32){ // スペースキー(ポーズ)
+      if(state == PAUSE){
+         state = PLAY;        // ポーズ状態のON/OFF
+       }else if(state == PLAY){
+          state = PAUSE;
+        }
+    }else if(e.keyCode == 13){ // エンターキー(状態遷移)
+      if(state == TITLE){
+        state = SELECT;  // タイトル画面からエンターでセレクト画面に。
+      }else if(state == SELECT){
+        state = PLAY;    // とりあえず今はPLAYに行くだけ
+        init();          // ここで初期化
+      }else if(state == GAMEOVER){
+        state = TITLE;   // タイトルに戻る
         reset();  // リセット処理
+      }else if(state == CLEAR){
+        // レベル＜４ならレベルを増やしてinit()。
+        // レベル＝４ならタイトルに戻してリセット。
       }
     }
 }
 
 // クリックでパッドを操作した時の挙動について
 function clickHandler(e){
+  if(state == TITLE){ state = SELECT; return; }  // タイトルからはセレクトに行くだけ。
   var x, y;
   var rect = e.target.getBoundingClientRect();
   x = e.clientX - rect.left;
   y = e.clientY - rect.top;
+
+  if(state == SELECT){
+      // クリック位置に応じてmodeの変更と実行処理。
+      state = PLAY;
+      return;
+  }
+
   if(x < 260 || y < 120){ return; }
+  // 以下はプレイ中の処理
   if(state == PLAY){
-    if(270 < x && x < 330 && 140 < y && y < 180){
+    if(270 < x && x < 330 && 140 < y && y < 180){  // 上キー(回転)
       if(rollable()){ phase = (phase + 1) % 4; setBlock(); }
     }
-    if(260 < x && x < 300 && 200 < y && y < 240){ slide(-1); }
-    if(300 < x && x < 340 && 200 < y && y < 240){ slide(1); }
-    if(270 < x && x < 330 && 260 < y && y < 300){
+    if(260 < x && x < 300 && 200 < y && y < 240){ slide(-1); } // 左
+    if(300 < x && x < 340 && 200 < y && y < 240){ slide(1); }  // 右
+    if(270 < x && x < 330 && 260 < y && y < 300){  // 下キー(落下)
        frame = fall_speed;
        score += 5;  // 強制落下で+5点
     }
   }
-  if(270 < x && x < 330 && 320 < y && y < 360 && state == GAMEOVER){
-    state = PLAY; reset();
-  }
-  if(270 < x && x < 330 && 380 < y && y < 420){
+  if(270 < x && x < 330 && 380 < y && y < 420){  // スペースキー
     if(state == PLAY){ state = PAUSE; }
     else if(state == PAUSE){ state = PLAY; }
   }
-
-
+  if(270 < x && x < 330 && 320 < y && y < 360){  // エンターキー
+    if(state == GAMEOVER){
+      state = TITLE; reset();
+    }
+  }
 }
 
 // diffが1なら右移動、-1なら左移動
@@ -114,6 +134,8 @@ function reset(){
       Matrix[j][i] = 0;
     }
   }
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, 340, 500);  // 画面を黒で初期化
 }
 
 // タイトル画面はエンター押すかどっかクリックするとSELECT

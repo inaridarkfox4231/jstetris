@@ -71,10 +71,13 @@ function drawLines(){
 }
 
 // 描画関数
-
-// TITLE, SELECTのときは画面を表示してreturn...別処理にするかー。
-
 function draw(){
+    // タイトル画面の時
+    if(state == TITLE){ draw_title(); }
+
+    // セレクト画面の時
+    if(state == SELECT){ draw_select(); }
+
     // タイトル画面, セレクト画面でなければステージを表示
     if(state != TITLE && state != SELECT){
         draw_stage();
@@ -93,6 +96,8 @@ function draw(){
         ctx.drawImage(pauseText, 40, 200);
     }
 
+    // CLEARの時はクリアーフレーズを表示する
+
     // FREEZEの場合は行が消えるアニメーションを展開する
     if(state == FREEZE){ freeze_anime(); }
 
@@ -110,8 +115,15 @@ function draw_stage(){
     drawLines(); // ライン数表示
 }
 
-// タイトル画面、セレクト画面の描画。
-// セレクト画面はキー入力により表示が変わる。
+// タイトル画面の描画
+function draw_title(){
+    ctx.drawImage(logoText, 0, 0);
+}
+
+// セレクト画面の描画(選択肢は白抜き)
+function draw_select(){
+    ctx.drawImage(choicesText, 0, 0);
+}
 
 // FREEZEの時の行が消えるアニメーション
 function freeze_anime(){
