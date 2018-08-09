@@ -2,6 +2,11 @@
 
 // 初期化
 function init(){
+  for(i = 0; i < 12; i++){
+    for(j = 0; j < 25; j++){
+      Matrix[j][i] = 0;  // とりあえず全部0にする。
+    }
+  }
   // 両端を8にして判定に使う（jを回してi++やってしまった。。）
   for(j = 0; j < 25; j++){ Matrix[j][0] = 8; Matrix[j][11] = 8; }
   // 最下段を8にして判定に使う
@@ -9,6 +14,13 @@ function init(){
   makeBlock();
   // mode == 1ならlinesを10, 20, 30, 50(levelによる)で初期化。
   // mode == 2ならlinesを0で初期化。
+  level += 1;
+  if(mode == 1){  // ステージクリアモード
+    fall_speed = 20 - level * 4;
+    lines = level * 10;
+    if(level == 4){ lines += 10; } // 10, 20, 30, 50.
+  }
+  // スコアアタックモードの場合は特にすることが無い。
 }
 
 // アップデート関数
@@ -35,18 +47,28 @@ function update(){
       for(j = 0; j < length; j++){ Matrix.unshift([8, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 8]); }
       eraseLine = [];
       score += linescore[length];  // 1, 2, 3, 4に応じて得点を加算する
-      if(Math.floor(lines / 10) < Math.floor((lines + length) / 10)){
-        level += 1;
-        fall_speed -= 1;
-        if(level > 15){ level = 15; }
-        if(fall_speed < 2){ fall_speed = 2; }
+
+      // ラインを消した場合のモードによる処理の分岐。
+      if(mode == 1){
+        lines -= length;
+        if(lines < 0){ lines = 0; }  // ステージクリアではlengthだけlinesを減らす(負の数にはならない)。
+      }else if(mode == 2){
+        if(Math.floor(lines / 10) < Math.floor((lines + length) / 10)){
+          level += 1;
+          fall_speed -= 1;  // 10行消すごとにfall_speedプラス1する。
+          if(level > 15){ level = 15; }
+          if(fall_speed < 2){ fall_speed = 2; }
+        }
+        lines += length;  // スコアアタックでは消したライン数をカウントする。
       }
-      lines += length;  // スコアアタックでは消したライン数をカウントする。
-      // ステージクリアではlengthだけlinesを減らす(0未満にはならない)。
     }
-    // ブロックを再生成してPLAYに戻る
+    // ブロックを再生成する
     makeBlock();
-    state = PLAY;  // modeが1でlinesが0ならCLEARに遷移する。
+    if(mode == 1 && lines == 0){
+      state = CLEAR;  // modeが1でlinesが0ならCLEARに遷移する。
+    }else{
+      state = PLAY;   // modeが2か、または1でノルマ未達成のときはPLAYに戻る。
+    }
   }
 }
 

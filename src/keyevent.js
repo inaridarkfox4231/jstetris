@@ -46,8 +46,12 @@ function keyDownHandler(e){
         state = TITLE;   // タイトルに戻る
         reset();  // リセット処理
       }else if(state == CLEAR){
-        // レベル＜４ならレベルを増やしてinit()。
+        // レベル＜４ならinit()してPLAYに戻る。
         // レベル＝４ならタイトルに戻してリセット。
+        if(mode == 1){
+          if(level < 4){ state = PLAY; init(); }
+          else{ state = TITLE; reset(); }
+        }
       }
     }
 }
@@ -140,7 +144,7 @@ function rollable(){
 
 // リセット処理
 function reset(){
-  level = 1;
+  level = 0;
   score = 0;
   lines = 0;
   mode = 0;  // モード変数を0に戻す
