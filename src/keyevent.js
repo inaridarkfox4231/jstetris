@@ -49,7 +49,7 @@ function clickHandler(e){
   if(state == SELECT){
       // クリック位置に応じてmodeの変更と実行処理。
       state = PLAY;
-      return;
+      init(); return;
   }
 
   if(x < 260 || y < 120){ return; }
