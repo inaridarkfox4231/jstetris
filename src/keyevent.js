@@ -5,6 +5,17 @@ canvas.addEventListener("click", clickHandler, false);
 
 // 十字キーの右で右移動、左で左移動、上で回転、下で強制落下。
 function keyDownHandler(e){
+    if(state == SELECT){
+      // セレクト画面での処理は別立て
+      if(e.keyCode == 38){  // 上キーで上に
+        mode -= 1;
+        if(mode < 0){ mode = 2; }
+      }else if(e.keyCode == 40){  // 下キーで下に
+        mode += 1;
+        if(mode > 2){ mode = 0; }
+      }
+    }
+
     if(e.keyCode == 39 && state == PLAY){　slide(1);　} // 右キー（右移動）
     else if(e.keyCode == 37 && state == PLAY){ slide(-1); } // 左キー（左移動）
     else if(e.keyCode == 38 && state == PLAY){ // 上キー（回転）
@@ -26,8 +37,11 @@ function keyDownHandler(e){
       if(state == TITLE){
         state = SELECT;  // タイトル画面からエンターでセレクト画面に。
       }else if(state == SELECT){
-        state = PLAY;    // とりあえず今はPLAYに行くだけ
-        init();          // ここで初期化
+        if(mode == 0){
+          state = TITLE;  // modeが0の場合はタイトルに戻る。
+        }else{
+          state = PLAY; init();   // ここで初期化(modeにより処理を分ける)
+        }
       }else if(state == GAMEOVER){
         state = TITLE;   // タイトルに戻る
         reset();  // リセット処理
@@ -48,8 +62,10 @@ function clickHandler(e){
 
   if(state == SELECT){
       // クリック位置に応じてmodeの変更と実行処理。
-      state = PLAY;
-      init(); return;
+      if(70 < x && x < 200 && 140 < y && y < 170){ mode = 0; state = TITLE; }
+      if(70 < x && x < 250 && 220 < y && y < 250){ mode = 1; state = PLAY; init(); }
+      if(70 < x && x < 265 && 270 < y && y < 300){ mode = 2; state = PLAY; init(); }
+      return;
   }
 
   if(x < 260 || y < 120){ return; }
@@ -127,6 +143,7 @@ function reset(){
   level = 1;
   score = 0;
   lines = 0;
+  mode = 0;  // モード変数を0に戻す
   fall_speed = 16;
   nextType = Math.floor(Math.random() * 7) + 1; // nextも初期化する
   for(j = 0; j < 24; j++){
@@ -134,8 +151,6 @@ function reset(){
       Matrix[j][i] = 0;
     }
   }
-  ctx.fillStyle = "#000";
-  ctx.fillRect(0, 0, 340, 500);  // 画面を黒で初期化
 }
 
 // タイトル画面はエンター押すかどっかクリックするとSELECT

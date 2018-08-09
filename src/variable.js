@@ -17,6 +17,8 @@ blank.src = "./images/BLANK.png";  // ブランク（横一列・・行消去に
 
 var gameBoard = new Image();
 gameBoard.src = "./images/GAMEBOARD.png"; // ゲームボード
+var backGround = new Image();
+backGround.src = "./images/background.png"; // 黒背景
 
 var pauseText = new Image();
 pauseText.src = "./images/pause.png"; // ポーズテキスト
@@ -28,6 +30,10 @@ var titlemesText = new Image();
 titlemesText.src = "./images/titlemessage.png"  // タイトル下の文章
 var choicesText = new Image();
 choicesText.src = "./images/choices.png"  // 選択肢の画像
+var clearText = new Image();
+clearText.src = "./images/clear.png"  // クリア時のテキスト
+var allClearText = new Image();
+allClearText.src = "./images/allclear.png"  // ステージオールクリア
 
 var numbers = new Image();
 numbers.src = "./images/NUMBER.png";  // 数のテキスト

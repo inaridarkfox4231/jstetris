@@ -72,11 +72,14 @@ function drawLines(){
 
 // 描画関数
 function draw(){
+    // 黒で初期化
+    ctx.drawImage(backGround, 0, 0);
+
     // タイトル画面の時
-    if(state == TITLE){ draw_title(); }
+    if(state == TITLE){ draw_title(); return; }
 
     // セレクト画面の時
-    if(state == SELECT){ draw_select(); }
+    if(state == SELECT){ draw_select(); return; }
 
     // タイトル画面, セレクト画面でなければステージを表示
     if(state != TITLE && state != SELECT){
@@ -97,6 +100,13 @@ function draw(){
     }
 
     // CLEARの時はクリアーフレーズを表示する
+    if(state == CLEAR){
+        if(level < 4){
+            ctx.drawImage(clearText, 40, 200);
+        }else{
+            ctx.drawImage(allClearText, 40, 180);
+        }
+    }
 
     // FREEZEの場合は行が消えるアニメーションを展開する
     if(state == FREEZE){ freeze_anime(); }
@@ -117,12 +127,17 @@ function draw_stage(){
 
 // タイトル画面の描画
 function draw_title(){
-    ctx.drawImage(logoText, 0, 0);
+    ctx.drawImage(logoText, 70, 110);
+    ctx.drawImage(titlemesText, 45, 260);
 }
 
 // セレクト画面の描画(選択肢は白抜き)
 function draw_select(){
-    ctx.drawImage(choicesText, 0, 0);
+    var kind = [0, 1, 2];
+    kind[mode] += 3;
+    ctx.drawImage(choicesText, 0, 30 * kind[0], 130, 30, 70, 140, 130, 30);
+    ctx.drawImage(choicesText, 0, 30 * kind[1], 180, 30, 70, 220, 180, 30);
+    ctx.drawImage(choicesText, 0, 30 * kind[2], 195, 30, 70, 270, 195, 30);
 }
 
 // FREEZEの時の行が消えるアニメーション
