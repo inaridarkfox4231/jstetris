@@ -7,33 +7,33 @@ canvas.addEventListener("click", clickHandler, false);
 function keyDownHandler(e){
     if(state == SELECT){
       // セレクト画面での処理は別立て
-      if(e.keyCode == 38){  // 上キーで上に
+      if(e.keyCode == K_UP){  // 上キーで上に
         mode -= 1;
         if(mode < 0){ mode = 2; }
-      }else if(e.keyCode == 40){  // 下キーで下に
+      }else if(e.keyCode == K_DOWN){  // 下キーで下に
         mode += 1;
         if(mode > 2){ mode = 0; }
       }
     }
 
-    if(e.keyCode == 39 && state == PLAY){　slide(1);　} // 右キー（右移動）
-    else if(e.keyCode == 37 && state == PLAY){ slide(-1); } // 左キー（左移動）
-    else if(e.keyCode == 38 && state == PLAY){ // 上キー（回転）
+    if(e.keyCode == K_RIGHT && state == PLAY){　slide(1);　} // 右キー（右移動）
+    else if(e.keyCode == K_LEFT && state == PLAY){ slide(-1); } // 左キー（左移動）
+    else if(e.keyCode == K_UP && state == PLAY){ // 上キー（回転）
       if(rollable()){
         phase = (phase + 1) % 4;
         setBlock();
       }
-    }else if(e.keyCode == 40 && state == PLAY){ // 下キー（落下）
+    }else if(e.keyCode == K_DOWN && state == PLAY){ // 下キー（落下）
        frame = fall_speed;
        score += 5;   // 強制落下で+5点
      }
-    else if(e.keyCode == 32){ // スペースキー(ポーズ)
+    else if(e.keyCode == K_SPACE){ // スペースキー(ポーズ)
       if(state == PAUSE){
          state = PLAY;        // ポーズ状態のON/OFF
        }else if(state == PLAY){
           state = PAUSE;
         }
-    }else if(e.keyCode == 13){ // エンターキー(状態遷移)
+    }else if(e.keyCode == K_ENTER){ // エンターキー(状態遷移)
       if(state == TITLE){
         state = SELECT;  // タイトル画面からエンターでセレクト画面に。
       }else if(state == SELECT){
@@ -99,8 +99,9 @@ function clickHandler(e){
       if(mode == 1){
         if(level < 4){ state = PLAY; init(); }
         else{ state = TITLE; reset(); }
-    }
-  }
+        }
+      }
+   }
 }
 
 // diffが1なら右移動、-1なら左移動

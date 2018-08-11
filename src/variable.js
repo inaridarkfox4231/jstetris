@@ -76,6 +76,14 @@ const GAMEOVER = 5;
 const CLEAR = 6;
 var state = TITLE;  // タイトルからスタート
 
+// KEYCODE変数
+const K_ENTER = 13;
+const K_RIGHT = 39;
+const K_LEFT = 37;
+const K_UP = 38;
+const K_DOWN = 40;
+const K_SPACE = 32;
+
 // モード変数
 var mode = 0;  // 0のときタイトルに戻る、1のときステージクリアモード、2のときスコアアタックモード
 // 上下キーで変わる、もしくはクリックで決定されて実行される。
