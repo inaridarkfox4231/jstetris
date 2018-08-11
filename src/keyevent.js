@@ -91,7 +91,14 @@ function clickHandler(e){
   }
   if(270 < x && x < 330 && 320 < y && y < 360){  // エンターキー
     if(state == GAMEOVER){
-      state = TITLE; reset();
+      state = TITLE;   // タイトルに戻る
+      reset();  // リセット処理
+    }else if(state == CLEAR){
+      // レベル＜４ならinit()してPLAYに戻る。
+      // レベル＝４ならタイトルに戻してリセット。
+      if(mode == 1){
+        if(level < 4){ state = PLAY; init(); }
+        else{ state = TITLE; reset(); }
     }
   }
 }
